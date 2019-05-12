@@ -5,15 +5,15 @@
       <el-row>
         <!-- 黑马logo -->
         <el-col :span="8" class="logo">
-          <img src="../../assets/logo.png" alt="">
+          <!-- <img src="../../assets/logo.png" alt=""> -->
         </el-col>
         <!-- 大标题 -->
         <el-col :span="8" class="title">
-          <h1>电商后台管理系统</h1>
+          <h1>ERP后台管理系统</h1>
         </el-col>
         <!-- right -->
         <el-col :span="8" class="right">
-          <span>欢迎上海前端25期钻石会员</span>
+          <span>欢迎亲爱的主人</span>
           <a href="javascript:;" @click.prevent="logout">退出</a>
         </el-col>
       </el-row>
