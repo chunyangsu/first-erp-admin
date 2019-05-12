@@ -1,0 +1,387 @@
+<template>
+  <div>
+    <!-- 面包屑导航 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right" class="users-nav">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <!-- 搜索栏 -->
+    <el-row class="users-search" :gutter="20">
+      <el-col :span="6">
+        <el-input placeholder="请输入用户名" v-model="queryStr" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="queryUserList(queryStr)"></el-button>
+        </el-input>
+      </el-col>
+      <!-- 添加用户按钮 -->
+      <el-col :span="4">
+        <el-button type="success" plain @click="showAddUserDialog">添加用户</el-button>
+      </el-col>
+    </el-row>
+
+    <!-- 表格 -->
+    <el-table :data="usersList" stripe style="width: 100%">
+      <el-table-column prop="username" label="姓名" width="180">
+      </el-table-column>
+      <el-table-column prop="email" label="邮箱" width="180">
+      </el-table-column>
+      <el-table-column prop="mobile" label="电话" width="180">
+      </el-table-column>
+      <el-table-column label="用户状态" width="260">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.mg_state" active-color="#409EFF" inactive-color="#C0CCDA" @change="changeUserState(scope.row.id, scope.row.mg_state)">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <!-- 修改 -->
+          <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="showeditUserDialog(scope.row)"></el-button>
+          <!-- 删除 -->
+          <el-button type="danger" size="mini" plain icon="el-icon-delete" @click="delUser(scope.row.id)"></el-button>
+          <!-- 分配角色 -->
+          <el-button type="success" size="mini" plain icon="el-icon-check">分配角色</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 分页器 -->
+    <el-pagination background layout="prev, pager, next" :total="totals" :current-page.sync="curPage" :page-size="pageSize" @current-change="changePage">
+    </el-pagination>
+
+    <!-- 添加用户对话框 -->
+    <!--
+        :rules 用来设置表单验证规则的
+        ref    在vue中是一个特殊的属性，给组件或者HTML元素添加该属性后，
+      可以在 js 中通过 this.$refs.loginForm 来获取到当前组件或者DOM对象
+        prop 它的值是 model 对象中的一个属性
+          当使用 表单验证 或者 表单重置 功能时，必须要提供该属性
+     -->
+    <el-dialog title="添加用户" :visible.sync="addUserVisible" @close="closeAddUserDialog">
+      <el-form :model="addUserForm" :rules="addUserRules" ref="userAddForm">
+        <el-form-item label="用户名" prop="username" label-width="120px">
+          <el-input v-model="addUserForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password" label-width="120px">
+          <el-input v-model="addUserForm.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email" label-width="120px">
+          <el-input v-model="addUserForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="120px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addUserVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 编辑用户对话框 -->
+    <el-dialog title="编辑用户" :visible.sync="editUserVisible" @close="closeeditUserDialog">
+      <el-form :model="editUserForm" :rules="editUserRules" ref="userEditForm">
+        <el-form-item label="用户名" prop="username" label-width="120px">
+          <el-input disabled :value="editUserForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email" label-width="120px">
+          <el-input v-model="editUserForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="120px">
+          <el-input v-model="editUserForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editUserVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editUser">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+// import axios from 'axios'
+export default {
+  // 一进入页面就渲染
+  created() {
+    this.getUsersList()
+  },
+  // 数据
+  data() {
+    return {
+      usersList: [],
+      curPage: 1,
+      pageSize: 3,
+      totals: 0,
+      queryStr: '',
+      // 添加用户对话框属性
+      addUserVisible: false,
+      addUserForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
+      // 编辑用户对话框属性
+      editUserVisible: false,
+      editUserForm: {
+        id: -1,
+        username: '',
+        email: '',
+        mobile: ''
+      },
+      // 校验规则
+      // required 是否为必填项
+      // message 当前规则校验失败时的提示
+      // trigger 表单验证的触发实际，blur表示失去焦点时触发
+      addUserRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
+        ]
+      },
+      // 编辑用户表单验证规则
+      editUserRules: {
+        email: [
+          {
+            // required: true,
+            pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+            message: '邮件格式不正确',
+            trigger: 'blur'
+          }
+        ],
+        mobile: [
+          {
+            // required: true,
+            pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+            message: '手机号码格式不正确',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  // 方法集合
+  methods: {
+    // 1. 获取用户列表数据
+    // curPage = 1 es6语法，给参数设置默认值为1
+    async getUsersList(curPage = 1) {
+      const res = await this.$http.get('/users', {
+        params: {
+          pagenum: curPage,
+          pagesize: 3,
+          query: this.queryStr || ''
+        }
+        // headers: {
+        //   Authorization: localStorage.getItem('token')
+        // }
+      })
+      // console.log(res)
+      // 获取数据
+      const { data, meta } = res.data
+      if (meta.status === 200) {
+        this.usersList = data.users
+        this.totals = data.total
+        this.curPage = data.pagenum
+      }
+    },
+    // 2. 点击切换分页器
+    changePage(curPage) {
+      this.getUsersList(curPage)
+    },
+    // 3. 查询
+    queryUserList(queryStr) {
+      // console.log(queryStr)
+      this.curPage = 1
+      this.getUsersList()
+      // console.log(this.usersList)
+      // this.usersList.forEach(item => {
+      //   for (let codePoint of item.username) {
+      //     // console.log(codePoint)
+      //     for (let query of this.queryStr) {
+      //       if (query === codePoint) {
+      //         console.log(query)
+      //         // codePoint = query
+      //         codePoint = codePoint + ','
+      //       }
+      //     }
+      //   }
+      // })
+    },
+    // 4. 改变用户状态
+    async changeUserState(id, userState) {
+      // console.log(id, userState)
+      const res = await this.$http.put(`/users/${id}/state/${userState}`, {
+        params: {
+          uId: id,
+          type: userState
+        }
+      })
+      console.log(res)
+      const { data, meta } = res.data
+      if (meta.status === 200) {
+        this.$message({
+          message: data.mg_state === 0 ? '禁用成功' : '启用成功',
+          type: 'success',
+          duration: 1000
+        })
+      } else {
+        this.$message({
+          message: meta.msg,
+          type: 'error',
+          duration: 1000
+        })
+      }
+    },
+    // 5. 展示添加用户对话框
+    showAddUserDialog() {
+      this.addUserVisible = true
+    },
+    // 6. 点击确定按钮添加用户
+    addUser() {
+      // 进行表单验证
+      // ref: 在vue中是一个特殊的属性，给组件或者HTML元素添加该属性后，
+      // 可以在 js 中通过 this.$refs.loginForm 来获取到当前组件或者DOM对象
+      this.$refs.userAddForm.validate(valid => {
+        // valid表示是否校验成功
+        // 成功就为true
+        // 失败就为false
+        if (valid) {
+          console.log('验证成功')
+          // 1. 添加用户数据
+          // 2. 隐藏对话框
+          // 3. 重置表单
+          // 4. 重新展示用户列表
+          this.$http.post('/users', this.addUserForm).then(res => {
+            // console.log(res)
+            const { meta } = res.data
+            if (meta.status === 201) {
+              this.addUserVisible = false
+              this.getUsersList()
+              // this.curPage = 1
+            }
+          })
+        } else {
+          console.log('验证失败')
+          return false
+        }
+      })
+    },
+    // 7. 关闭添加用户对话框并且清空表单
+    closeAddUserDialog() {
+      this.$refs.userAddForm.resetFields()
+    },
+    // 8. 删除用户
+    delUser(id) {
+      // console.log(id)
+      this.$confirm('确认删除该用户吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http.delete(`/users/${id}`).then(res => {
+            console.log(res)
+            const { meta } = res.data
+            if (meta.status === 200) {
+              this.$message({
+                type: 'success',
+                message: meta.msg
+              })
+              // 方法一
+              // this.getUsersList()
+              // this.curPage = 1
+              // 方法二：从本地数据列表中直接删除一行数据
+              // const index = this.usersList.findIndex(item => item.id === id)
+              // this.usersList.splice(index, 1)
+              // const totalPage = Math.ceil(this.usersList.length / this.pageSize)
+              // if (this.curPage > totalPage) {
+              //   this.getUsersList(--this.curPage)
+              // }
+              const index = this.usersList.findIndex(item => item.id === id)
+              this.usersList.splice(index, 1)
+              const pageTotal = Math.ceil(this.usersList.length / this.pageSize)
+              if (this.curPage > pageTotal) {
+                this.getUsersList(--this.curPage)
+              }
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    // 9. 点击修改按钮弹出修改用户对话框
+    showeditUserDialog(curUser) {
+      console.log(curUser)
+      // 1. 用遍历对象的方法将数据传递给表单
+      for (const key in this.editUserForm) {
+        this.editUserForm[key] = curUser[key]
+      }
+      // 2. 展示对话框
+      this.editUserVisible = true
+    },
+    // 10. 关闭修改用户对话框并且重置
+    closeeditUserDialog() {
+      this.$refs.userEditForm.resetFields()
+    },
+    // 11. 点击确定按钮提交编辑用户对话框
+    editUser() {
+      // 1. 先校验
+      this.$refs.userEditForm.validate(valid => {
+        if (valid) {
+          const { id, email, mobile } = this.editUserForm
+          this.$http
+            .put(`/users/${id}`, {
+              email,
+              mobile
+            })
+            .then(res => {
+              console.log(res)
+              const { data, meta } = res.data
+              if (meta.status === 200) {
+                // 更新该用户的数据
+                const updateUserData = this.usersList.find(
+                  item => item.id === id
+                )
+                updateUserData.email = data.email
+                updateUserData.mobile = data.mobile
+
+                // 关闭对话框
+                this.editUserVisible = false
+              }
+            })
+        } else {
+          return false
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+// 面包屑导航
+.users-nav {
+  background-color: #d4dae0;
+  height: 40px;
+  font-size: 18px;
+  line-height: 40px;
+  padding-left: 10px;
+}
+// 搜索栏
+.users-search {
+  .el-select .el-input {
+    width: 130px;
+  }
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+</style>

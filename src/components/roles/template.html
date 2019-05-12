@@ -1,0 +1,44 @@
+<div>
+  <el-table :data="roleData" stripe style="width: 100%">
+    <!-- 箭头按钮 -->
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <!-- <el-form label-position="left" inline class="demo-table-expand">
+
+        </el-form> -->
+      </template>
+    </el-table-column>
+    <el-table-column type="index" width="50">
+    </el-table-column>
+    <el-table-column prop="roleName" label="角色名称" width="180">
+    </el-table-column>
+    <el-table-column prop="roleDesc" label="描述" width="180">
+    </el-table-column>
+    <el-table-column prop="address" label="操作">
+      <template slot-scope="scope">
+        <!-- 修改按钮 -->
+        <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="showEditRole(scope.row)"></el-button>
+        <!-- 删除按钮 -->
+        <el-button type="danger" size="mini" plain icon="el-icon-delete" @click="delRole(scope.row.id)"></el-button>
+        <!-- 分配权限 -->
+        <el-button type="success" size="mini" plain icon="el-icon-check">分配权限</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+
+  <!-- 修改角色对话框 -->
+  <el-dialog title="修改角色" :visible.sync="editRoleVisible" @close="closeeditRoleDialog">
+    <el-form :model="editRoleForm" ref="refRole">
+      <el-form-item label="角色名称" prop="roleName" label-width="120px">
+        <el-input :value="editRoleForm.roleName" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="角色描述" prop="roleDesc" label-width="120px">
+        <el-input v-model="editRoleForm.roleDesc" autocomplete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="editRoleVisible = false">取 消</el-button>
+      <el-button type="primary" @click="editRole">确 定</el-button>
+    </div>
+  </el-dialog>
+</div>
