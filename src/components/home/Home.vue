@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <el-header>
       <el-row>
-        <!-- 黑马logo -->
+        <!-- 图片logo -->
         <el-col :span="8" class="logo">
           <!-- <img src="../../assets/logo.png" alt=""> -->
         </el-col>
@@ -52,6 +52,25 @@
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>权限列表</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
+          <!-- 一级菜单 产品管理 -->
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>产品管理</span>
+            </template>
+            <el-menu-item index="/home/products">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>产品列表</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="/home/brands">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>品牌列表</span>
               </template>
             </el-menu-item>
           </el-submenu>

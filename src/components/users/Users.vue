@@ -18,7 +18,6 @@
         <el-button type="success" plain @click="showAddUserDialog">添加用户</el-button>
       </el-col>
     </el-row>
-
     <!-- 表格 -->
     <el-table :data="usersList" stripe style="width: 100%">
       <el-table-column prop="username" label="姓名" width="180">
@@ -40,14 +39,13 @@
           <!-- 删除 -->
           <el-button type="danger" size="mini" plain icon="el-icon-delete" @click="delUser(scope.row.id)"></el-button>
           <!-- 分配角色 -->
-          <el-button type="success" size="mini" plain icon="el-icon-check">分配角色</el-button>
+          <el-button type="success" size="mini" plain icon="el-icon-check" @click="assignRole(scope.row)">分配角色</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination background layout="prev, pager, next" :total="totals" :current-page.sync="curPage" :page-size="pageSize" @current-change="changePage">
     </el-pagination>
-
     <!-- 添加用户对话框 -->
     <!--
         :rules 用来设置表单验证规则的
@@ -76,7 +74,6 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </div>
     </el-dialog>
-
     <!-- 编辑用户对话框 -->
     <el-dialog title="编辑用户" :visible.sync="editUserVisible" @close="closeeditUserDialog">
       <el-form :model="editUserForm" :rules="editUserRules" ref="userEditForm">
@@ -95,6 +92,24 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </div>
     </el-dialog>
+    <!--分配角色对话框 -->
+    <el-dialog title="分配角色" :visible.sync="assignRoleDialog">
+      <el-form ref="assignRole" :model="assignRoleForm" label-width="80px">
+        <el-form-item label="活动名称">
+          <el-input v-model="assignRoleForm.username"></el-input>
+        </el-form-item>
+        <el-form-item label="角色列表">
+          <el-select v-model="assignRoleForm.role_id" placeholder="请选择角色">
+            <el-option v-for="item in roles" :key="item.id" :label="item.roleName" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="assignRoleDialog = false">取 消</el-button>
+        <el-button type="primary" @click="assignRoleSure">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -104,6 +119,7 @@ export default {
   // 一进入页面就渲染
   created() {
     this.getUsersList()
+    this.getRoleLists()
   },
   // 数据
   data() {
@@ -123,12 +139,21 @@ export default {
       },
       // 编辑用户对话框属性
       editUserVisible: false,
+      assignRoleDialog: false, // 分配角色对话框
       editUserForm: {
         id: -1,
         username: '',
         email: '',
-        mobile: ''
+        mobile: '',
+        role_id: ''
       },
+      // 角色对话框
+      assignRoleForm: {
+        id: undefined,
+        username: undefined,
+        role_id: undefined
+      },
+      roles: [], // 角色列表数组
       // 校验规则
       // required 是否为必填项
       // message 当前规则校验失败时的提示
@@ -361,6 +386,29 @@ export default {
           return false
         }
       })
+    },
+    // 获取角色列表数据
+    async getRoleLists() {
+      const response = await this.$http.get('/roles')
+      const { data, meta } = response.data
+      if (meta.status === 200) {
+        this.roles = data
+      }
+    },
+    // 打开分配角色对话框
+    async assignRole(row) {
+      this.assignRoleDialog = true
+      this.assignRoleForm.username = row.username
+      // 获取用户角色id
+      const response = await this.$http.get(`/users/${row.id}`)
+      const { data, meta } = response.data
+      if (meta.status === 200) {
+        this.assignRoleForm.role_id = data.rid
+      }
+    },
+    // 分配角色
+    assignRoleSure() {
+
     }
   }
 }
@@ -377,6 +425,7 @@ export default {
 }
 // 搜索栏
 .users-search {
+  margin-top: 10px;
   .el-select .el-input {
     width: 130px;
   }
