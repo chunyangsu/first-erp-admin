@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // 导入Login组件，注意不要添加.vue后缀
-import Login from '@/components/login/Login'
+import Login from '@/views/login/Login'
 // 导入Home组件
-import Home from '@/components/home/Home'
+import Home from '@/views/home/Home'
 // 导入Users组件
-import Users from '@/components/users/Users'
+import Users from '@/views/users/Users'
 // 导入Rights组件
-import Rights from '@/components/rights/Rights'
+import Rights from '@/views/rights/Rights'
 // 导入Roles组件
-import Roles from '@/components/roles/Roles'
+import Roles from '@/views/roles/Roles'
 
 Vue.use(Router)
 

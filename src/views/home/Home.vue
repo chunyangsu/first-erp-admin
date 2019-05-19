@@ -13,7 +13,7 @@
         </el-col>
         <!-- right -->
         <el-col :span="8" class="right">
-          <span>欢迎亲爱的主人</span>
+          <span>好看的允儿</span>
           <a href="javascript:;" @click.prevent="logout">退出</a>
         </el-col>
       </el-row>
