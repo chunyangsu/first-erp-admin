@@ -15,18 +15,18 @@
       </el-col>
       <!-- 添加用户按钮 -->
       <el-col :span="4">
-        <el-button type="success" plain @click.native="$refs.UserDialog.showAddUserDialog">添加用户</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click.native="$refs.UserDialog.showAddUserDialog">添加</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
-    <el-table :data="usersList" stripe style="width: 100%">
-      <el-table-column prop="username" label="姓名" width="180">
+    <el-table :data="usersList" stripe border style="width: 100%">
+      <el-table-column prop="username" label="姓名" min-width="60">
       </el-table-column>
-      <el-table-column prop="email" label="邮箱" width="180">
+      <el-table-column prop="email" label="邮箱" min-width="60">
       </el-table-column>
-      <el-table-column prop="mobile" label="电话" width="180">
+      <el-table-column prop="mobile" label="电话" min-width="60">
       </el-table-column>
-      <el-table-column label="用户状态" width="260">
+      <el-table-column label="用户状态" min-width="60">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.mg_state" active-color="#409EFF" inactive-color="#C0CCDA" @change="changeUserState(scope.row.id, scope.row.mg_state)">
           </el-switch>
