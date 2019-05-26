@@ -19,7 +19,7 @@
       </el-col>
     </el-row>
     <!-- 表格 -->
-    <el-table :data="usersList" stripe border style="width: 100%">
+    <el-table :data="usersList" stripe border @contextmenu.native="rightClick($event)" @row-contextmenu="getRow" style="width: 100%">
       <el-table-column prop="username" label="姓名" min-width="60">
       </el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="60">
@@ -149,7 +149,8 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      tempRow: undefined
     }
   },
   // 方法集合
@@ -158,6 +159,24 @@ export default {
     getData(children) {
       // console.log(children)
       this.getUsersList()
+    },
+    // 鼠标右击表格展示菜单
+    rightClick(e) {
+      e.tempRow = this.tempRow
+      // this.GLOBAL.rightMenu = {
+      //   type: 'CustomerInquiry',
+      //   info: [
+      //     { fun: this.audit, tagName: 'custagsView.handleAudit' },
+      //     { fun: this.turnPurInqBook, tagName: 'custagsView.turnInbook' },
+      //     { fun: this.turnSellBook, tagName: 'custagsView.turnSellbook' },
+      //     { fun: this.copyOrder, tagName: 'custagsView.copyInqOrder' },
+      //     { fun: this.close, tagName: 'custagsView.close' }
+      //   ]
+      // }
+    },
+    // 右击表格触发该事件
+    getRow(row, column, event) {
+      this.tempRow = row
     },
     // 1. 获取用户列表数据
     // curPage = 1 es6语法，给参数设置默认值为1

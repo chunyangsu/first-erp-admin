@@ -36,7 +36,7 @@ export default {
   methods: {
     // 右击菜单事件
     rightClick(e) {
-      console.log(e)
+      // console.log(e)
       // console.log(this.GLOBAL.rightMenu)
       // this.copyContent = window.getSelection().toString()
       // // this.inic()
