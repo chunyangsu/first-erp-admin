@@ -76,7 +76,7 @@ export default {
         username: undefined,
         role_id: undefined
       },
-      roles: [], // 角色列表数组
+      roles: [] // 角色列表数组
     }
   },
   methods: {
