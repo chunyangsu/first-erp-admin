@@ -47,13 +47,6 @@
     <el-pagination background layout="prev, pager, next" :total="totals" :current-page.sync="curPage" :page-size="pageSize" @current-change="changePage">
     </el-pagination>
     <!-- 添加用户对话框 -->
-    <!--
-        :rules 用来设置表单验证规则的
-        ref    在vue中是一个特殊的属性，给组件或者HTML元素添加该属性后，
-      可以在 js 中通过 this.$refs.loginForm 来获取到当前组件或者DOM对象
-        prop 它的值是 model 对象中的一个属性
-          当使用 表单验证 或者 表单重置 功能时，必须要提供该属性
-     -->
     <user-dialog ref="UserDialog" :children="children" @getData='getData'></user-dialog>
     <!-- 编辑用户对话框 -->
     <el-dialog title="编辑用户" :visible.sync="editUserVisible" @close="closeeditUserDialog">

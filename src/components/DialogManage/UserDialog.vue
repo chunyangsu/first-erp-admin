@@ -2,17 +2,17 @@
   <div>
     <el-dialog title="添加用户" :visible.sync="addUserVisible" @close="closeAddUserDialog">
       <el-form :model="addUserForm" :rules="addUserRules" ref="userAddForm">
-        <el-form-item label="用户名" prop="username" label-width="120px">
-          <el-input v-model="addUserForm.username" autocomplete="off"></el-input>
+        <el-form-item label="用户名" prop="username" label-width="100px">
+          <el-input v-model="addUserForm.username" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" label-width="120px">
-          <el-input v-model="addUserForm.password" autocomplete="off"></el-input>
+        <el-form-item label="密码" prop="password" label-width="100px">
+          <el-input v-model="addUserForm.password" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email" label-width="120px">
-          <el-input v-model="addUserForm.email" autocomplete="off"></el-input>
+        <el-form-item label="邮箱" prop="email" label-width="100px">
+          <el-input v-model="addUserForm.email" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
-        <el-form-item label="手机" prop="mobile" label-width="120px">
-          <el-input v-model="addUserForm.mobile" autocomplete="off"></el-input>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,3 +92,8 @@ export default {
   }
 }
 </script>
+<style>
+.inputWidth {
+  width: 250px;
+}
+</style>
