@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- 浮动按钮 -->
-    <div class="unReadNews" @mousedown.self="move">
-      <div class="icon" @click="ShowNewsDialog">
+    <div id="drag" class="unReadNews" v-drag.limit @click="ShowNewsDialog">
+      <div class="icon">
         <i class="el-icon-more" />
         <el-badge :value="news" :max="99" class="mark" />
       </div>
@@ -19,40 +19,59 @@ export default {
   data() {
     return {
       news: 1, // 未读消息数量初始化
-      newsVisible: false, // 未读消息弹窗展示隐藏
-      positionX: 0,
-      positionY: 0
+      newsVisible: false // 未读消息弹窗展示隐藏
     }
   },
   methods: {
     // 打开未读消息弹窗
-    ShowNewsDialog() {
-      this.newsVisible = true
-    },
-    // 鼠标拖拽事件
-    move(e) {
-      const odiv = e.target // 获取目标元素
-
-      // 算出鼠标相对元素的位置
-      const disX = e.clientX - odiv.offsetLeft
-      const disY = e.clientY - odiv.offsetTop
-      document.onmousemove = e => {
-        // 鼠标按下并移动的事件
-        // 用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-        const left = e.clientX - disX
-        const top = e.clientY - disY
-
-        // 绑定元素位置到positionX和positionY上面
-        this.positionX = top
-        this.positionY = left
-
-        // 移动当前元素
-        odiv.style.left = left + 'px'
-        odiv.style.top = top + 'px'
+    // 浮动按钮点击事件
+    ShowNewsDialog(e) {
+      //  验证是否为点击事件，是则继续执行click事件，否则不执行
+      let isClick = document.getElementById('drag').getAttribute('data-flag')
+      if (isClick === 'true') {
+        this.newsVisible = true
+        return false
       }
-      document.onmouseup = e => {
-        document.onmousemove = null
-        document.onmouseup = null
+    }
+  },
+  directives: {
+    // 自定义鼠标拖拽指令
+    drag: {
+      // 指令的定义
+      bind: function (el, binding) {
+        let odiv = el // 获取当前元素
+        let firstTime = '' // 声明按钮起始时间
+        let lastTime = ''
+        odiv.onmousedown = (e) => {
+          document.getElementById('drag').setAttribute('data-flag', false)
+          firstTime = new Date().getTime()
+          // 算出鼠标相对元素的位置
+          let disX = e.clientX - odiv.offsetLeft
+          let disY = e.clientY - odiv.offsetTop
+
+          document.onmousemove = (e) => {
+            // 用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+            let left = e.clientX - disX
+            let top = e.clientY - disY
+            //  限制在可视窗范围内移动元素
+            if (left > 0 && left < document.body.clientWidth - 45) {
+              odiv.style.left = left + 'px'
+            }
+            if (top > 0 && top < document.body.clientHeight - 35) {
+              odiv.style.top = top + 'px'
+            }
+          }
+          document.onmouseup = (e) => {
+            document.onmousemove = null
+            document.onmouseup = null
+            // onmouseup 时的时间，并计算差值
+            lastTime = new Date().getTime()
+            if ((lastTime - firstTime) < 200) {
+              document.getElementById('drag').setAttribute('data-flag', true)
+            }
+          }
+          return false
+        }
       }
     }
   }
@@ -69,6 +88,7 @@ export default {
   border-radius: 50%;
   background-color: #409eff;
   box-shadow: 0 3px 10px #aaa;
+  cursor: pointer;
   z-index: 999;
 }
 .unReadNews .icon {
@@ -78,7 +98,6 @@ export default {
   color: white;
   font-size: 15px;
   height: 0;
-  cursor: pointer;
 }
 .el-icon-more {
   height: 0;
