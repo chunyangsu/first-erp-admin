@@ -14,8 +14,33 @@
         <el-form-item label="手机" prop="mobile" label-width="100px">
           <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile" label-width="100px">
+          <el-input v-model="addUserForm.mobile" autocomplete="off" class="inputWidth"></el-input>
+        </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <!-- 操作按钮 -->
+      <div slot="footer" id="btn" :class="{isFixed: barFixed}">
         <el-button @click="addUserVisible = false">取 消</el-button>
         <el-button type="primary" @click="addUser">确 定</el-button>
       </div>
@@ -35,10 +60,6 @@ export default {
         email: '',
         mobile: ''
       },
-      // 校验规则
-      // required 是否为必填项
-      // message 当前规则校验失败时的提示
-      // trigger 表单验证的触发实际，blur表示失去焦点时触发
       addUserRules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -48,31 +69,42 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      barFixed: false
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll, true) // 监听（绑定）滚轮滚动事件
+  },
   methods: {
+    // 监听元素到顶部的距离
+    handleScroll() {
+      var innerHeight = window.innerHeight
+      // const clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+      // 设备/屏幕高度
+      console.log(innerHeight)
+      const scrollObj = document.getElementById('btn') // 滚动区域
+      const scrollTop = scrollObj.getBoundingClientRect() // 元素到顶部的距离（动态变化）
+      console.log(scrollTop.top)
+      // var offsetTop = document.getElementById('btn').offsetTop // 元素到顶部的距离（不变化）
+      // console.log(offsetTop)
+      if (scrollTop.top > innerHeight) {
+        this.barFixed = true
+      } else {
+        this.barFixed = false
+      }
+    },
     // 5. 展示添加用户对话框
     showAddUserDialog() {
       this.addUserVisible = true
+      this.handleScroll()
     },
     // 6. 点击确定按钮添加用户
     addUser() {
-      // 进行表单验证
-      // ref: 在vue中是一个特殊的属性，给组件或者HTML元素添加该属性后，
-      // 可以在 js 中通过 this.$refs.loginForm 来获取到当前组件或者DOM对象
       this.$refs.userAddForm.validate(valid => {
-        // valid表示是否校验成功
-        // 成功就为true
-        // 失败就为false
         if (valid) {
           console.log('验证成功')
-          // 1. 添加用户数据
-          // 2. 隐藏对话框
-          // 3. 重置表单
-          // 4. 重新展示用户列表
           this.$http.post('/users', this.addUserForm).then(res => {
-            // console.log(res)
             const { meta } = res.data
             if (meta.status === 201) {
               this.addUserVisible = false
@@ -95,5 +127,11 @@ export default {
 <style>
 .inputWidth {
   width: 250px;
+}
+.isFixed {
+  position: fixed;
+  bottom: 50px;
+  right: 288px;
+  z-index: 999;
 }
 </style>

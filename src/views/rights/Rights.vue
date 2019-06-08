@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="right">
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right" class="users-nav">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -37,9 +37,9 @@ export default {
   },
   // 方法集合
   methods: {
+    // 获取权限列表
     async getRightsList() {
       const res = await this.$http.get('/rights/list')
-      console.log(res)
       const { data, meta } = res.data
       if (meta.status === 200) {
         this.rightsData = data
