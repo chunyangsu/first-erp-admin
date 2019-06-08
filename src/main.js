@@ -9,6 +9,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 导入css样式
 import '@/assets/index.css'
+// 导入font-awesome
+import 'font-awesome/css/font-awesome.min.css'
 // 导入axios
 import axios from 'axios'
 // 将 axios 添加到Vue的原型中
