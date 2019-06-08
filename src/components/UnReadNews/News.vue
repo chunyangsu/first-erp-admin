@@ -55,8 +55,7 @@ export default {
   },
   created() {
     // 定时轮询（定时向后台请求数据）
-    setInterval(this.getUsersList, 10000)
-    this.notifySuccess('您有一条新消息！')
+    // setInterval(this.getUsersList, 10000)
   },
   methods: {
     // 打开未读消息弹窗
@@ -112,8 +111,11 @@ export default {
         type: 'warning', // 橘黄色
         offset: 100,
         position: 'bottom-right',
-        // duration: 5000
-        duration: 0
+        duration: 5000,
+        // Notification通知弹窗点击事件
+        onClick: function () {
+          this.close()
+        }
       })
     }
   },
