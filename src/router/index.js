@@ -14,6 +14,7 @@ import Roles from '@/views/roles/Roles'
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [{
     path: '/login',
     component: Login
