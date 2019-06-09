@@ -7,17 +7,6 @@
         <li @click="refresh">刷新</li>
         <li @click="closeCurrent()">关闭当前页</li>
         <!-- <li @click="refreshSelectedAll">刷新所有页面</li> -->
-        <!-- <li>关闭其他页面</li> -->
-        <!--<hr v-show="tagShow" style="border: 0.5px solid #E8EAED">-->
-        <!--<li v-show="tagShow" @click="handleAudit">{{ $t('custagsView.handleAudit') }}</li>-->
-        <!--<li v-show="tagShow" @click="turnPurInqBook">{{ $t('custagsView.turnInbook') }}</li>-->
-        <!--<li v-show="tagShow" @click="turnSellBook">{{ $t('custagsView.turnSellbook') }}</li>-->
-        <!--<li v-show="tagShow" @click="handleClose">{{ $t('custagsView.close') }}</li>-->
-        <!-- <li v-for="(item, index) in liListTop" v-show="item.isShow" :key="index" @click="item.eventName">{{ $t(item.tagName) }}</li>
-          <hr v-show="liListCenterShow" style="border: 0.5px solid #E8EAED">
-          <li v-for="(item, index) in liListCenter" v-show="item.isShow" :key="index" @click="item.eventName">{{ $t(item.tagName) }}</li>
-          <hr v-show="liListBottomShow" style="border: 0.5px solid #E8EAED">
-          <li v-for="(item, index) in liListBottom" v-show="item.isShow" :key="index" @click="item.eventName">{{ $t(item.tagName) }}</li> -->
       </ul>
     </div>
   </div>
@@ -36,107 +25,28 @@ export default {
   methods: {
     // 右击菜单事件
     rightClick(e) {
-      // console.log(e)
-      // console.log(this.GLOBAL.rightMenu)
-      // this.copyContent = window.getSelection().toString()
-      // // this.inic()
-      // if (e.TagsViews) {
-      //   if (JSON.stringify(this.GLOBAL.rightMenu) !== '{}') {
-      //     if (this.isPush) {
-      //       const _this = this
-      //       this.GLOBAL.rightMenu.info.forEach(function (val, i) {
-      //         if (typeof val.fun === 'function') {
-      //           const temp = {
-      //             eventName: val.fun,
-      //             tagName: val.tagName,
-      //             isShow: true
-      //           }
-      //           _this.liListTop.push(temp)
-      //           if (i + 1 === _this.GLOBAL.rightMenu.info.length) {
-      //             _this.isPush = false
-      //             _this.GLOBAL.rightMenu = {}
-      //           }
-      //         }
-      //       })
-      //     }
-      //   }
-      // }
-      // // 列表
-      // if (JSON.stringify(this.GLOBAL.rightMenu) !== '{}') {
-      //   if (this.isPush) {
-      //     const _this = this
-      //     this.GLOBAL.rightMenu.info.forEach(function (val, i) {
-      //       if (typeof val.fun === 'function') {
-      //         const temp = {
-      //           eventName: val.fun,
-      //           tagName: val.tagName,
-      //           isShow: true
-      //         }
-      //         _this.liListCenter.push(temp)
-      //         if (i + 1 === _this.GLOBAL.rightMenu.info.length) {
-      //           _this.isPush = false
-      //           _this.liListCenterShow = true
-      //           _this.GLOBAL.rightMenu = {}
-      //         }
-      //       }
-      //     })
-      //   }
-      // }
-      // if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      //   const temp = {
-      //     eventName: '',
-      //     tagName: 'apptagsView.paste',
-      //     isShow: true
-      //   }
-      //   this.liList.push(temp)
-      // }
-      // if (e.stopAppTag) {
-      //   this.liListBottom = []
-      //   this.liListBottomShow = false
-      //   if (JSON.stringify(this.GLOBAL.rightMenu) !== '{}') {
-      //     if (this.isPush) {
-      //       const _this = this
-      //       this.GLOBAL.rightMenu.info.forEach(function (val, i) {
-      //         if (typeof val.fun === 'function') {
-      //           const temp = {
-      //             eventName: val.fun,
-      //             tagName: val.tagName,
-      //             isShow: true
-      //           }
-      //           _this.liListBottom.push(temp)
-      //           if (i + 1 === _this.GLOBAL.rightMenu.info.length) {
-      //             _this.isPush = false
-      //             _this.GLOBAL.rightMenu = {}
-      //           }
-      //         }
-      //       })
-      //     }
-      //   }
-      // }
       this.visible = true
-      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-      this.left = e.clientX - offsetLeft + 12 // 12: margin right
-      this.top = e.clientY - 2
+      const innerHeight = window.innerHeight // 可视窗高度
+      const innerWidth = window.innerWidth // 可视窗宽度
+      const offsetLeft = this.$el.getBoundingClientRect().left // 右击菜单自身的宽度
+      this.left = e.clientX - offsetLeft // 右击菜单相对页面的宽度
+      this.top = e.clientY // 右击菜单相对页面的高度
+      // 如果右击菜单超过页面的高度时，让他固定在可视窗内
+      if (this.top > innerHeight - 80) {
+        this.top = innerHeight - 80
+      }
+      // 如果右击菜单超过页面的宽度时，让他固定在可视窗内
+      if (this.left > innerWidth - 210) {
+        this.left = innerWidth - 210
+      }
     },
     refresh() {
       window.location.reload()
-      // this.$store.dispatch('delCachedView', this.$route).then(() => {
-      //   const { fullPath } = this.$route
-      //   this.$nextTick(() => {
-      //     this.$router.replace({
-      //       path: '/redirect' + fullPath
-      //     })
-      //   })
-      // })
     },
     // 关闭当前页
     closeCurrent() {
       console.log(1)
     },
-    // 全部刷新
-    // refreshSelectedAll() {
-    //   window.location.reload()
-    // },
     // 点击菜单外空白处，菜单关闭
     close() {
       this.visible = false
