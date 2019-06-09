@@ -40,7 +40,12 @@
         </el-form-item>
       </el-form>
       <!-- 操作按钮 -->
-      <div slot="footer" id="btn" :class="{isFixed: barFixed}">
+      <div slot="footer" id="btn" class="dialog-footer">
+        <el-button @click="addUserVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
+      </div>
+      <!-- 固定浮动的状态 -->
+      <div slot="footer" v-if="barFixed === true" class="isFixed">
         <el-button @click="addUserVisible = false">取 消</el-button>
         <el-button type="primary" @click="addUser">确 定</el-button>
       </div>
@@ -82,13 +87,12 @@ export default {
       var innerHeight = window.innerHeight
       // const clientHeight = document.documentElement.clientHeight || document.body.clientHeight
       // 设备/屏幕高度
-      console.log(innerHeight)
-      const scrollObj = document.getElementById('btn') // 滚动区域
-      const scrollTop = scrollObj.getBoundingClientRect() // 元素到顶部的距离（动态变化）
+      // console.log(innerHeight)
+      const scrollTop = document.getElementById('btn').getBoundingClientRect() // 元素到顶部的距离（动态变化）
       console.log(scrollTop.top)
       // var offsetTop = document.getElementById('btn').offsetTop // 元素到顶部的距离（不变化）
       // console.log(offsetTop)
-      if (scrollTop.top > innerHeight) {
+      if (scrollTop.top > innerHeight - 55) {
         this.barFixed = true
       } else {
         this.barFixed = false
@@ -130,8 +134,8 @@ export default {
 }
 .isFixed {
   position: fixed;
-  bottom: 50px;
-  right: 288px;
+  bottom: 16px;
+  right: 374px;
   z-index: 999;
 }
 </style>
