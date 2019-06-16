@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // 导入Login组件，注意不要添加.vue后缀
 import Login from '@/views/login/Login'
+// 导入Layout组件
+import Layout from '@/views/layout/Layout'
 // 导入Home组件
 import Home from '@/views/home/Home'
 // 导入Users组件
@@ -20,9 +22,12 @@ const router = new Router({
     component: Login
   },
   {
-    path: '/home',
-    component: Home,
+    path: '/layout',
+    component: Layout,
     children: [{
+      path: 'home',
+      component: Home
+    }, {
       path: 'users',
       component: Users
     }, {

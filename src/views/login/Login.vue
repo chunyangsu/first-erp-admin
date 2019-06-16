@@ -115,7 +115,7 @@ export default {
         // 登录成功，需要跳转到后台管理首页
         // 同时需要记录token的值
         localStorage.setItem('token', data.token)
-        this.$router.push('/home')
+        this.$router.push('/layout')
       } else {
         // console.log('登录失败', meta.msg)
         this.$message({
