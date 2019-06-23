@@ -47,9 +47,19 @@
             <div slot="header" class="clearfix">
               <span class="select">已选列表</span>
             </div>
-            <el-tag v-for="tag in selectedList" :key="tag.id" :type="tag.type" closable @close="handleClose(tag)">
+            <!-- 选中值标签 -->
+            <div class="selection clearfix">
+              <div class="content textHidden">
+                <el-popover v-if="selections.length > 2" trigger="hover" placement="right">
+                  <pre><div v-html="selections"/></pre>
+                  <div slot="reference" class="textHidden" v-html="selections" />
+                </el-popover>
+              </div>
+              <div class="close">×</div>
+            </div>
+            <!-- <el-tag v-for="tag in selectedList" :key="tag.id" :type="tag.type" closable @close="handleClose(tag)">
               {{ tag.model }}
-            </el-tag>
+            </el-tag> -->
           </el-card>
         </div>
       </div>
@@ -89,7 +99,8 @@ export default {
       },
       proModelList: [], // 未选型号数组
       selectedList: [], // 已选型号数组
-      selectProIds: [] // 已选型号id数组
+      selectProIds: [], // 已选型号id数组
+      selections: '啊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈'
       // LD_ProModel: false
     }
   },
@@ -254,7 +265,38 @@ li {
 .dialog .el-card__body {
   padding: 10px;
 }
-.el-tag {
-  margin-right: 5px;
+/* 选中值标签样式 */
+.selection {
+  width: 141px;
+  border: 1px solid rgba(64, 158, 255, 0.2);
+  background-color: rgba(64, 158, 255, 0.1);
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #409eff;
+  border-radius: 4px;
+}
+/* 选中值内容 */
+.selection .content {
+  width: 125px;
+  float: left;
+}
+/* 选中值×按钮 */
+.selection .close {
+  float: left;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 7px;
+  color: #409eff;
+  cursor: pointer;
+}
+.selection .close:hover {
+  color: white;
+  background-color: #409eff;
+  border-radius: 50%;
 }
 </style>
