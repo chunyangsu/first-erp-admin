@@ -7,12 +7,16 @@ import router from './router'
 import ElementUI from 'element-ui'
 // 导入样式
 import 'element-ui/lib/theme-chalk/index.css'
+
+// 多选搜索组件
+import MoreSelect from './components/moreSelect'
 // 导入css样式
 import '@/assets/index.css'
 // 导入font-awesome
 import 'font-awesome/css/font-awesome.min.css'
 // 导入axios
 import axios from 'axios'
+Vue.use(MoreSelect)
 // 将 axios 添加到Vue的原型中
 // 实例对象可以直接使用原型对象中的属性或方法
 // 所有的组件都是Vue的实例

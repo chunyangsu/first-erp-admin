@@ -7,17 +7,16 @@
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 搜索栏 -->
-    <el-row class="users-search" :gutter="20">
-      <el-col :span="6">
-        <el-input placeholder="请输入用户名" v-model="queryStr" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" @click="queryUserList(queryStr)"></el-button>
-        </el-input>
-      </el-col>
+    <div>
+      <!-- 用户名 -->
+      <el-input placeholder="请输入用户名" v-model="queryStr" class="input-with-select" style="width: 200px">
+        <el-button slot="append" icon="el-icon-search" @click="queryUserList(queryStr)"></el-button>
+      </el-input>
+      <!-- 自定义封装多选组件 -->
+      <MoreSelect ref="MoreSelect" placeholder="请输入内容" />
       <!-- 添加用户按钮 -->
-      <el-col :span="4">
-        <el-button type="primary" icon="el-icon-plus" @click.native="$refs.UserDialog.showAddUserDialog">添加</el-button>
-      </el-col>
-    </el-row>
+      <el-button type="primary" icon="el-icon-plus" @click.native="$refs.UserDialog.showAddUserDialog">添加</el-button>
+    </div>
     <!-- 表格 -->
     <el-table :data="usersList" stripe border @contextmenu.native="rightClick($event)" @row-contextmenu="getRow" style="width: 100%">
       <el-table-column prop="username" label="姓名" min-width="60">
