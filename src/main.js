@@ -10,12 +10,19 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 // 多选搜索组件
 import SgoSelect from './components/SgoSelect'
+// loading组件
+import myLoading from './components/loading'
 // 导入css样式
 import '@/assets/index.css'
 // 导入font-awesome
 import 'font-awesome/css/font-awesome.min.css'
 // 导入axios
 import axios from 'axios'
+Vue.use(myLoading, {
+  // 这里的 icon 要换成你本地的
+  icon: require('./assets/images/kaxikai1.jpg'),
+  progressColor: 'blue'
+})
 Vue.use(SgoSelect)
 // 将 axios 添加到Vue的原型中
 // 实例对象可以直接使用原型对象中的属性或方法
