@@ -24,6 +24,14 @@
       <el-table-column prop="email" label="邮箱" min-width="60">
       </el-table-column>
       <el-table-column prop="mobile" label="电话" min-width="60">
+        <template slot-scope="scope">
+          <el-popover placement="right" width="150" trigger="hover">
+            <el-table :data="gridData">
+              <el-table-column width="150" property="phone" label="手机号"></el-table-column>
+            </el-table>
+            <span slot="reference" style="cursor: pointer;">{{ scope.row.mobile }}</span>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column label="用户状态" min-width="60">
         <template slot-scope="scope">
@@ -142,7 +150,15 @@ export default {
           }
         ]
       },
-      tempRow: undefined
+      tempRow: undefined,
+      gridData: [{
+        phone: '13057160969'
+      }, {
+        phone: '13776955175'
+      },
+      {
+        phone: '13912860252'
+      }]
     }
   },
   // 方法集合
@@ -197,33 +213,17 @@ export default {
     },
     // 3. 查询
     queryUserList(queryStr) {
-      // console.log(queryStr)
       this.curPage = 1
       this.getUsersList()
-      // console.log(this.usersList)
-      // this.usersList.forEach(item => {
-      //   for (let codePoint of item.username) {
-      //     // console.log(codePoint)
-      //     for (let query of this.queryStr) {
-      //       if (query === codePoint) {
-      //         console.log(query)
-      //         // codePoint = query
-      //         codePoint = codePoint + ','
-      //       }
-      //     }
-      //   }
-      // })
     },
     // 4. 改变用户状态
     async changeUserState(id, userState) {
-      // console.log(id, userState)
       const res = await this.$http.put(`/users/${id}/state/${userState}`, {
         params: {
           uId: id,
           type: userState
         }
       })
-      console.log(res)
       const { data, meta } = res.data
       if (meta.status === 200) {
         this.$message({
@@ -241,7 +241,6 @@ export default {
     },
     // 8. 删除用户
     delUser(id) {
-      // console.log(id)
       this.$confirm('确认删除该用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -249,23 +248,12 @@ export default {
       })
         .then(() => {
           this.$http.delete(`/users/${id}`).then(res => {
-            console.log(res)
             const { meta } = res.data
             if (meta.status === 200) {
               this.$message({
                 type: 'success',
                 message: meta.msg
               })
-              // 方法一
-              // this.getUsersList()
-              // this.curPage = 1
-              // 方法二：从本地数据列表中直接删除一行数据
-              // const index = this.usersList.findIndex(item => item.id === id)
-              // this.usersList.splice(index, 1)
-              // const totalPage = Math.ceil(this.usersList.length / this.pageSize)
-              // if (this.curPage > totalPage) {
-              //   this.getUsersList(--this.curPage)
-              // }
               const index = this.usersList.findIndex(item => item.id === id)
               this.usersList.splice(index, 1)
               const pageTotal = Math.ceil(this.usersList.length / this.pageSize)
@@ -284,7 +272,6 @@ export default {
     },
     // 9. 点击修改按钮弹出修改用户对话框
     showeditUserDialog(curUser) {
-      console.log(curUser)
       // 1. 用遍历对象的方法将数据传递给表单
       for (const key in this.editUserForm) {
         this.editUserForm[key] = curUser[key]
@@ -308,7 +295,6 @@ export default {
               mobile
             })
             .then(res => {
-              console.log(res)
               const { data, meta } = res.data
               if (meta.status === 200) {
                 // 更新该用户的数据
