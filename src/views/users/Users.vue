@@ -12,8 +12,8 @@
       <el-input placeholder="请输入用户名" v-model="queryStr" class="input-with-select" style="width: 200px">
         <el-button slot="append" icon="el-icon-search" @click="queryUserList(queryStr)"></el-button>
       </el-input>
-      <!-- 自定义封装多选组件 -->
-      <MoreSelect ref="MoreSelect" placeholder="请输入内容" />
+      <!-- 自定义封装多选搜索组件 -->
+      <!-- <sgo-select ref="SgoSelect" :data="userList" :selected.sync="selectedUserList" :tagfield="tagfield" :searchfield="searchfield" placeholder="请输入用户名" /> -->
       <!-- 添加用户按钮 -->
       <el-button type="primary" icon="el-icon-plus" @click.native="$refs.UserDialog.showAddUserDialog">添加</el-button>
     </div>
