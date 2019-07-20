@@ -7,7 +7,7 @@
       <el-breadcrumb-item>权限列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 权限列表 -->
-    <el-table :data="rightsData" stripe style="width: 100%">
+    <el-table :data="rightsData" border stripe style="width: 100%">
       <el-table-column type="index" width="50">
       </el-table-column>
       <el-table-column prop="authName" label="权限名称" width="180">
