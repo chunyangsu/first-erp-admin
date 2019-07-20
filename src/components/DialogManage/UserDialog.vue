@@ -2,6 +2,12 @@
   <div>
     <el-dialog title="添加用户" :visible.sync="addUserVisible" @close="closeAddUserDialog">
       <el-form :model="addUserForm" :rules="addUserRules" ref="userAddForm">
+        <el-form-item label="跟进人" prop="username" label-width="100px">
+          <template>
+            <el-radio v-model="isFixed" :label="false">备选项</el-radio>
+            <el-radio v-model="isFixed" :label="true">备选项</el-radio>
+          </template>
+        </el-form-item>
         <el-form-item label="用户名" prop="username" label-width="100px">
           <el-input v-model="addUserForm.username" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
@@ -75,7 +81,9 @@ export default {
           { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
         ]
       },
-      barFixed: false
+      barFixed: false,
+      isFixed: false
+      // isFixed: false
     }
   },
   mounted() {
@@ -89,7 +97,7 @@ export default {
       // 设备/屏幕高度
       // console.log(innerHeight)
       const scrollTop = document.getElementById('btn').getBoundingClientRect() // 元素到顶部的距离（动态变化）
-      console.log(scrollTop.top)
+      // console.log(scrollTop.top)
       // var offsetTop = document.getElementById('btn').offsetTop // 元素到顶部的距离（不变化）
       // console.log(offsetTop)
       if (scrollTop.top > innerHeight - 55) {
@@ -105,9 +113,16 @@ export default {
     },
     // 6. 点击确定按钮添加用户
     addUser() {
+      console.log(this.isFixed)
+      // if (this.radio === 2) {
+      //   this.isFixed = true
+      // } else {
+      //   this.isFixed = false
+      // }
+      // console.log(this.isFixed)
       this.$refs.userAddForm.validate(valid => {
         if (valid) {
-          console.log('验证成功')
+          // console.log('验证成功')
           this.$http.post('/users', this.addUserForm).then(res => {
             const { meta } = res.data
             if (meta.status === 201) {

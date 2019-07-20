@@ -18,6 +18,8 @@ import '@/assets/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 // 导入axios
 import axios from 'axios'
+// 引入mock数据，关闭则注释该行
+require('./mock')
 Vue.use(myLoading, {
   // 这里的 icon 要换成你本地的
   icon: require('./assets/images/kaxikai1.jpg'),
