@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-clickoutside="close">
     <!-- 浮动按钮 -->
     <div id="drag" class="unReadNews" v-drag.limit @click="ShowNewsDialog">
       <div class="icon">
@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+import Clickoutside from 'element-ui/src/utils/clickoutside'
 export default {
   name: 'News', // 未读消息
   data() {
@@ -158,7 +159,8 @@ export default {
           return false
         }
       }
-    }
+    },
+    Clickoutside
   }
 }
 </script>
