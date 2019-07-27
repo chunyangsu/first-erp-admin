@@ -27,7 +27,8 @@
       <div style="float: left; width: 84%;">
         <el-form ref="dataForm" :rules="rules" :model="temp">
           <el-form-item prop="inputContent">
-            <el-input ref="remarkInput" v-model="temp.inputContent" :rows="2" placeholder="请输入内容" type="textarea" autofocus @keyup.shift.50.native="showUserList" />
+            <el-input v-if="placeholder_flag" ref="remarkInput" v-model="temp.inputContent" :rows="2" :placeholder="replyHolder" type="textarea" autofocus @keyup.shift.50.native="showUserList" />
+            <el-input v-else ref="remarkInput" v-model="temp.inputContent" :rows="2" placeholder="请输入内容" type="textarea" autofocus @keyup.shift.50.native="showUserList" />
           </el-form-item>
         </el-form>
       </div>
@@ -88,12 +89,24 @@ export default {
       }
       ],
       reminds: [], // @对象的id
+      objectNameList: [], // @对象名称的数组
       optionVisible: false,
+      placeholder_flag: false,
+      replyHolder: '',
       rules: {
         // inputContent: [{ required: true, message: '评论内容不能为空', trigger: ['blur', 'change'] }]
       }
     }
   },
+  // watch: {
+  //   temp: {
+  //     handler(newVal, oldVal) {
+  //       console.log(newVal, oldVal)
+  //     },
+  //     deep: true,
+  //     immediate: true
+  //   }
+  // },
   methods: {
     // 获取所有用户名
     // getUserList() {
@@ -104,6 +117,7 @@ export default {
     // 输入@展示用户下拉框
     showUserList() {
       this.optionVisible = true
+      this.placeholder_flag = true
       // this.getUserList()
     },
     // 点击空白处关闭用户下拉框
@@ -112,9 +126,9 @@ export default {
     },
     // 用户下拉框选择事件
     selected(row, column, cell, event) {
-      this.reminds.push(row.id) // 获取@对象的id，组成数组
-      this.reminds = Array.from(new Set(this.reminds)) // 数组去重
-      console.log(this.reminds)
+      this.objectNameList.push(row.name) // 获取@对象的name，组成数组
+      this.objectNameList = Array.from(new Set(this.objectNameList)) // 数组去重
+      // console.log(this.objectNameList)
       this.temp.inputContent = this.temp.inputContent + row.name // 将@对象的名字展示在输入框内
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
@@ -123,30 +137,21 @@ export default {
     },
     // 点击人名展示回复对象
     reply(row) {
-      this.temp.inputContent = '回复' + row.user_name + '：' + ''
-      this.replyObjectId = row.comment_user_id
+      // this.temp.inputContent = '回复' + row.user_name + '：' + ''
+      this.placeholder_flag = true
+      this.replyHolder = '回复' + row.user_name + '：'
+      this.replyObjectId = row.id
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
       })
     },
     // 提交
     send() {
-      console.log(111)
-      //   const commentPO = {
-      //     module_id: this.moduleid,
-      //     module: this.moduletype,
-      //     content: this.temp.inputContent,
-      //     comment_object_id: this.replyObjectId ? this.replyObjectId : undefined
-      //   }
-      //   createRemark({ commentPO: commentPO, reminds: this.reminds }).then(response => {
-      //     // 提交成功，给备注数据数组新增最新备注
-      //     const curTime = parseTime(Date.parse(new Date())) // 获取当前时间
-      //     const user_name = getuser_name() // 本地获取用户姓名
-      //     const userIcon = getUserAvatar() // 本地获取用户头像
-      //     // console.log(userIcon)
-      //     this.remarks.push({ comment_user_icon: userIcon, user_name: user_name, time: curTime, content: this.temp.inputContent })
-      //     this.temp.inputContent = ''
-      //   })
+      this.objectNameList.forEach(item => {
+        if (this.temp.inputContent.includes(item)) {
+          console.log(item)
+        }
+      })
     }
   }
 }
