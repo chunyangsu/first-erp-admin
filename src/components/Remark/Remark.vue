@@ -11,7 +11,10 @@
           <div class="right">
             <!-- 姓名和时间 -->
             <div class="name_time clearfix">
-              <div class="name" @click="reply(item)">{{ item.user_name }}</div>
+              <div class="name">
+                <span @click="reply(item)">{{ item.user_name }}</span>
+                <!-- <span v-if="item[item.id + 'cancelRepay']" style="font-size: 13px; color: #999;">取消回复</span> -->
+              </div>
               <div class="date">{{ item.time }}</div>
             </div>
             <!-- 备注内容 -->
@@ -75,6 +78,7 @@ export default {
       },
       userInfo: {}, // 当前用户
       replyObjectId: undefined, // 回复对象的id
+      // cancelRepay: false,
       userList: [{
         id: 1,
         name: '苏春阳'
@@ -138,10 +142,16 @@ export default {
     },
     // 点击人名展示回复对象
     reply(row) {
-      // this.temp.inputContent = '回复' + row.user_name + '：' + ''
-      this.placeholder_flag = true
+      // this.cancelRepay = false
+      this.placeholder_flag = true // 回复xxx占位文本
       this.replyHolder = '回复' + row.user_name + '：'
-      this.replyObjectId = row.id
+      if (this.replyObjectId === undefined || this.replyObjectId !== row.id) {
+        this.replyObjectId = row.id
+      } else if (this.replyObjectId === row.id) {
+        // 取消回复
+        this.replyObjectId = undefined
+        this.placeholder_flag = false
+      }
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
       })
