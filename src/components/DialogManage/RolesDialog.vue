@@ -52,7 +52,7 @@ export default {
       const { meta } = res.data
       if (meta.status === 200) {
         this.editRoleVisible = false
-        this.getRoleList()
+        this.$emit('getData', this.editRoleForm)
       }
     }
   }

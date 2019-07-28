@@ -113,16 +113,8 @@ export default {
     },
     // 6. 点击确定按钮添加用户
     addUser() {
-      console.log(this.isFixed)
-      // if (this.radio === 2) {
-      //   this.isFixed = true
-      // } else {
-      //   this.isFixed = false
-      // }
-      // console.log(this.isFixed)
       this.$refs.userAddForm.validate(valid => {
         if (valid) {
-          // console.log('验证成功')
           this.$http.post('/users', this.addUserForm).then(res => {
             const { meta } = res.data
             if (meta.status === 201) {

@@ -22,7 +22,6 @@
             <!-- 第二列：展示二级菜单 -->
             <el-col :span="20">
               <el-row class="level2-row" v-for="level2 in level1.children" :key="level2.id">
-                <!-- 展示二级菜单的名字 -->
                 <el-col :span="4">
                   <el-tag closable type="success" @close="delRoleRightById(scope.row.id, level2.id)">
                     {{ level2.authName }}
@@ -59,7 +58,7 @@
     </el-table>
 
     <!-- 修改角色对话框 -->
-    <roles-dialog ref="RolesDialog"></roles-dialog>
+    <roles-dialog ref="RolesDialog" :children="children" @getData='getData'></roles-dialog>
   </div>
 </template>
 
@@ -82,6 +81,9 @@ export default {
   },
   // 方法集合
   methods: {
+    getData(children) {
+      this.getRoleList()
+    },
     // 1. 获取角色列表数据
     async getRoleList() {
       const res = await this.$http.get('/roles')

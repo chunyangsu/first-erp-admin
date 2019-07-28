@@ -202,6 +202,7 @@ export default {
   .el-main {
     background-color: #eaeef1;
     color: #333;
+    // padding: 0;
   }
   .el-container:nth-child(5) .el-aside,
   .el-container:nth-child(6) .el-aside {

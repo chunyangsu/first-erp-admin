@@ -5,7 +5,8 @@
         <!-- 单条备注 -->
         <div class="info">
           <!-- 左侧头像 -->
-          <img :src="item.user_icon" class="avatar" width="38" height="38">
+          <!-- <img :src="icon" class="avatar" width="38" height="38"> -->
+          <img src="../../assets/images/kaxikai1.jpg" class="avatar" width="38" height="38">
           <!-- 右侧文本 -->
           <div class="right">
             <!-- 姓名和时间 -->
