@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="max-height: 350px; overflow-y: auto;">
+    <div id="remarksScroll" style="height: 350px; overflow-y: auto;">
       <div v-for="item in remarks" :key="item.id" class="remark">
         <!-- 单条备注 -->
         <div class="info">
@@ -103,27 +103,21 @@ export default {
       }
     }
   },
-  // watch: {
-  //   temp: {
-  //     handler(newVal, oldVal) {
-  //       console.log(newVal, oldVal)
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // },
+  created() {
+    this.scrollToBottom()
+  },
   methods: {
-    // 获取所有用户名
-    // getUserList() {
-    //   fetchUserList().then(response => {
-    //     this.userList = response.data
-    //   })
-    // },
+    // 滚动条至最底部
+    scrollToBottom() {
+      this.$nextTick(() => {
+        var container = this.$el.querySelector('#remarksScroll')
+        container.scrollTop = container.scrollHeight
+      })
+    },
     // 输入@展示用户下拉框
     showUserList() {
       this.optionVisible = true
       this.placeholder_flag = true
-      // this.getUserList()
     },
     // 点击空白处关闭用户下拉框
     colseOption() {
@@ -133,7 +127,6 @@ export default {
     selected(row, column, cell, event) {
       this.objectNameList.push(row.name) // 获取@对象的name，组成数组
       this.objectNameList = Array.from(new Set(this.objectNameList)) // 数组去重
-      // console.log(this.objectNameList)
       this.temp.inputContent = this.temp.inputContent + row.name // 将@对象的名字展示在输入框内
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
@@ -158,6 +151,7 @@ export default {
     },
     // 提交
     send() {
+      this.scrollToBottom() // 滚动条至最底部
       this.objectNameList.forEach(item => {
         if (this.temp.inputContent.includes(item)) {
           console.log(item)

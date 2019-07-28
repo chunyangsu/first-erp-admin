@@ -64,12 +64,9 @@ export default {
     },
     // 鼠标滑入展示备注组件
     showRemark(row) {
-      console.log(row)
       setTimeout(() => {
         row[row.id + 'remarkVisible'] = true
       }, 150)
-      // this.$forceUpdate()
-      // this.$refs.table.setCurrentRow()
     }
   }
 }
