@@ -137,6 +137,7 @@ export default {
     reply(row) {
       // this.cancelRepay = false
       this.placeholder_flag = true // 回复xxx占位文本
+      this.temp.inputContent = ''
       this.replyHolder = '回复' + row.user_name + '：'
       if (this.replyObjectId === undefined || this.replyObjectId !== row.id) {
         this.replyObjectId = row.id

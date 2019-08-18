@@ -67,18 +67,24 @@
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>产品管理</span>
+              <span>产品中心</span>
             </template>
             <el-menu-item index="/layout/products">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>产品列表</span>
+                <span>产品管理</span>
               </template>
             </el-menu-item>
             <el-menu-item index="/layout/brands">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>品牌列表</span>
+                <span>品牌管理</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="/layout/specifications">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>规格参数</span>
               </template>
             </el-menu-item>
           </el-submenu>

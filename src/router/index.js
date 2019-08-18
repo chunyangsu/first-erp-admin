@@ -12,6 +12,8 @@ import Users from '@/views/users/Users'
 import Rights from '@/views/rights/Rights'
 // 导入Roles组件
 import Roles from '@/views/roles/Roles'
+// 导入规格参数组件
+import SpecManage from '@/views/specifications/SpecManage'
 
 Vue.use(Router)
 
@@ -36,6 +38,9 @@ const router = new Router({
     }, {
       path: 'roles',
       component: Roles
+    }, {
+      path: 'specifications',
+      component: SpecManage
     }]
   }
   ]
