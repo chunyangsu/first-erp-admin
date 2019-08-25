@@ -1,0 +1,14 @@
+{
+  "data": {
+    "products": [{
+      "id": 1,
+      "name": "电脑",
+      "brand": "lenovo",
+      "model": "z580"
+    }]
+  },
+  "meta": {
+    "msg": "获取成功",
+    "status": 200
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "products": [{
+      "id": 1,
+      "name": "电脑",
+      "model": "z580",
+      "brand": "lenov"
+      "time": "2019-07-21 03:14"
+    }]
+  },
+  "meta": {
+    "msg": "获取成功",
+    "status": 200
+  }
+}
