@@ -70,11 +70,10 @@ export default {
     // 加入暂存车
     addCart() {
       this.cartProductList = JSON.parse(localStorage.getItem('cartProList'))
-      // 第一次获取不到数据时，暂存车数组置为空
-      if (!this.cartProductList) {
-        this.cartProductList = []
+      if(this.cartProductList) {
+        
       }
-      // console.log(this.cartProductList)
+      console.log(this.cartProductList)
       this.cartProductList = this.cartProductList.concat(this.chooseProductList)
       // 数组去重
       const hash = {}
@@ -83,7 +82,6 @@ export default {
         return item
       }, [])
       this.cartProductList = newArr
-      // 创建本地存储的数据
       localStorage.setItem('cartProList', JSON.stringify(this.cartProductList))
     }
   }

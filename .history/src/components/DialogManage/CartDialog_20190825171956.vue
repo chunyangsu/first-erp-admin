@@ -37,26 +37,26 @@ export default {
   name: 'CartDialog', // 暂存车
   props: {
     // 已选产品数组
-    // selectedprolist: {
-    //   type: Array,
-    //   default: function () {
-    //     return []
-    //   }
-    // }
+    selectedprolist: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    }
   },
   data() {
     return {
       DL_visible: false, // 弹窗开关
-      chooseProductList: [],
-      selectedprolist: []
+      chooseProductList: []
     }
   },
   methods: {
     // 打开暂存车弹窗
     openCart() {
-      this.selectedprolist = []
-      this.selectedprolist = JSON.parse(localStorage.getItem('cartProList'))
-      // console.log(this.selectedprolist)
+      console.log(this.selectedprolist)
+      // localStorage.setItem('cartProList', JSON.stringify(this.selectedprolist))
+      const list = JSON.parse(localStorage.getItem('selectedprolist'))
+      console.log(list)
       this.DL_visible = true
     }
   }

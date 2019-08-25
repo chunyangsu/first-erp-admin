@@ -47,16 +47,15 @@ export default {
   data() {
     return {
       DL_visible: false, // 弹窗开关
-      chooseProductList: [],
-      selectedprolist: []
+      chooseProductList: []
     }
   },
   methods: {
     // 打开暂存车弹窗
     openCart() {
       this.selectedprolist = []
-      this.selectedprolist = JSON.parse(localStorage.getItem('cartProList'))
-      // console.log(this.selectedprolist)
+      this.selectedprolist = JSON.parse(localStorage.getItem('selectedprolist'))
+      console.log(this.selectedprolist)
       this.DL_visible = true
     }
   }

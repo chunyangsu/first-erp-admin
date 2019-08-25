@@ -55,8 +55,8 @@ export default {
     // 打开暂存车弹窗
     openCart() {
       this.selectedprolist = []
-      this.selectedprolist = JSON.parse(localStorage.getItem('cartProList'))
-      // console.log(this.selectedprolist)
+      this.selectedprolist = JSON.parse(localStorage.getItem('selectedprolist'))
+      console.log(this.selectedprolist)
       this.DL_visible = true
     }
   }

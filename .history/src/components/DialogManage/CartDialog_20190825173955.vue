@@ -56,7 +56,7 @@ export default {
     openCart() {
       this.selectedprolist = []
       this.selectedprolist = JSON.parse(localStorage.getItem('cartProList'))
-      // console.log(this.selectedprolist)
+      console.log(this.selectedprolist)
       this.DL_visible = true
     }
   }

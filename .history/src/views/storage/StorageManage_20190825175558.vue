@@ -74,7 +74,7 @@ export default {
       if (!this.cartProductList) {
         this.cartProductList = []
       }
-      // console.log(this.cartProductList)
+      console.log(this.cartProductList)
       this.cartProductList = this.cartProductList.concat(this.chooseProductList)
       // 数组去重
       const hash = {}
@@ -83,7 +83,6 @@ export default {
         return item
       }, [])
       this.cartProductList = newArr
-      // 创建本地存储的数据
       localStorage.setItem('cartProList', JSON.stringify(this.cartProductList))
     }
   }
