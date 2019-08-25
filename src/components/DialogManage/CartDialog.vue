@@ -28,6 +28,12 @@
             <span>{{ scope.row.price }}</span>
           </template>
         </el-table-column>
+        <!-- 删除 -->
+        <el-table-column label="删除" fixed="right">
+          <template slot-scope="scope">
+            <el-button type="danger" size="mini" plain icon="el-icon-delete" @click="deletePro(scope.row)"></el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -56,8 +62,13 @@ export default {
     openCart() {
       this.selectedprolist = []
       this.selectedprolist = JSON.parse(localStorage.getItem('cartProList'))
-      // console.log(this.selectedprolist)
       this.DL_visible = true
+    },
+    // 删除
+    deletePro(row) {
+      const index = this.selectedprolist.indexOf(row)
+      this.selectedprolist.splice(index, 1)
+      localStorage.setItem('cartProList', JSON.stringify(this.selectedprolist))
     }
   }
 }

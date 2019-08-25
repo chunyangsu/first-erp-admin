@@ -74,7 +74,6 @@ export default {
       if (!this.cartProductList) {
         this.cartProductList = []
       }
-      // console.log(this.cartProductList)
       this.cartProductList = this.cartProductList.concat(this.chooseProductList)
       // 数组去重
       const hash = {}
