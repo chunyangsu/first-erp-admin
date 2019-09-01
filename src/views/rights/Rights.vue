@@ -7,7 +7,7 @@
       <el-breadcrumb-item>权限列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 权限列表 -->
-    <el-table :data="rightsData" border stripe style="width: 100%">
+    <el-table :data="rightsData" :height="ListTableHeight" border stripe size="mini" fit style="width: 100%">
       <el-table-column type="index" width="50">
       </el-table-column>
       <el-table-column prop="authName" label="权限名称" width="180">
@@ -26,12 +26,14 @@
 </template>
 
 <script>
+import tableStyle from '@/common/tableStyle'
 export default {
   created() {
     this.getRightsList()
   },
   data() {
     return {
+      ListTableHeight: window.innerHeight - tableStyle.header.height, // 表格高度
       rightsData: []
     }
   },
