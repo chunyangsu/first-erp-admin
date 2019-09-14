@@ -1,23 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// 导入Login组件，注意不要添加.vue后缀
+// 导入Login页面，注意不要添加.vue后缀
 import Login from '@/views/login/Login'
-// 导入Layout组件
+// 导入Layout页面
 import Layout from '@/views/layout/Layout'
-// 导入Home组件
+// 导入Home页面
 import Home from '@/views/home/Home'
-// 导入Users组件
+// 导入Users页面
 import Users from '@/views/users/Users'
-// 导入Rights组件
+// 导入Rights页面
 import Rights from '@/views/rights/Rights'
-// 导入Roles组件
+// 导入Roles页面
 import Roles from '@/views/roles/Roles'
 // 导入产品管理
 import ProductManage from '@/views/products/ProductManage'
 // 导入库存管理
 import StorageManage from '@/views/storage/StorageManage'
-// 导入规格参数组件
+// 导入规格参数页面
 import SpecManage from '@/views/specifications/SpecManage'
+// 导入用户订单页面
+import UserOrders from '@/views/orders/UserOrders'
 
 Vue.use(Router)
 
@@ -51,6 +53,9 @@ const router = new Router({
     }, {
       path: 'specifications',
       component: SpecManage
+    }, {
+      path: 'orders',
+      component: UserOrders
     }]
   }
   ]

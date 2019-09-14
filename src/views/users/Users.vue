@@ -18,7 +18,7 @@
       <el-button type="primary" icon="el-icon-plus" @click.native="$refs.UserDialog.showAddUserDialog">添加</el-button>
     </div>
     <!-- 表格 -->
-    <el-table :data="usersList" stripe border @contextmenu.native="rightClick($event)" @row-contextmenu="getRow" style="width: 100%">
+    <el-table :data="usersList" stripe border size="mini" @contextmenu.native="rightClick($event)" @row-contextmenu="getRow" style="width: 100%">
       <el-table-column prop="username" label="姓名" min-width="60">
       </el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="60">
@@ -195,9 +195,6 @@ export default {
           pagesize: 5,
           query: this.queryStr || ''
         }
-        // headers: {
-        //   Authorization: localStorage.getItem('token')
-        // }
       })
       // 获取数据
       const { data, meta } = res.data

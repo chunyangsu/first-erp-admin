@@ -1,11 +1,10 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="count" id="remarksScroll" max-height="200" stripe border size="mini" style="width: 100%">
       <el-table-column prop="date" label="日期" width="180">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180">
-      </el-table-column>
-      <el-table-column prop="address" label="地址">
+        <template slot-scope="scope">
+          <span>{{ scope.row.id}}</span>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -13,30 +12,30 @@
 
 <script>
 export default {
-  name: 'SpecManage', // 规格参数
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      count: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }]
+    }
+  },
+  methods: {
+    load() {
+      var dom = this.$el.querySelector('#remarksScroll')
+      dom.addEventListener('scroll', function () {
+        const scrollDistance = dom.scrollHeight - dom.scrollTop - dom.clientHeight
+        console.log(scrollDistance)
+        if (scrollDistance <= 0) {
+          // 等于0证明已经到底，可以请求接口
+          //   if ($this.currentPage < $this.totalPage) {// 当前页数小于总页数就请求
+          //     $this.currentPage++;// 当前页数自增
+          //     // 请求接口的代码
+          //     $this.$axios.fun().then(res => {
+          //       $this.tableData = $this.tableData.concat(res.data)
+          //       // 将请求回来的数据和当前展示的数据合并在一起
+          //     })
+          //   }
+        }
+      })
     }
   }
 }
 </script>
-
-<style>
-</style>
