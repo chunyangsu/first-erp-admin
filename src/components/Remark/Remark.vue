@@ -26,7 +26,7 @@
     <!-- 无数据时 暂无备注提醒 -->
     <div v-if="remarks.length === 0" style="text-align: center; padding: 10px 0 5px 0; font-size: 15px;">暂无备注</div>
     <!-- 输入框部分 -->
-    <div class="footer clearfix">
+    <div v-if="showInput" class="footer clearfix">
       <!-- 输入框 -->
       <div style="float: left; width: 84%;">
         <el-form ref="dataForm" :rules="rules" :model="temp">
@@ -67,6 +67,13 @@ export default {
       type: Array,
       default: function () {
         return []
+      }
+    },
+    // 是否隐藏input框
+    showInput: {
+      type: Boolean,
+      default: function () {
+        return true
       }
     }
   },
@@ -158,6 +165,9 @@ export default {
           console.log(item)
         }
       })
+      // 提交后隐藏备注弹窗
+      // this.visible = false
+      // this.$emit('update:visible')
     }
   }
 }
