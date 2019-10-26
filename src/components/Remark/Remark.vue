@@ -130,7 +130,7 @@ export default {
       this.objectNameList.push(row.name) // 获取@对象的name，组成数组
       this.objectNameList = Array.from(new Set(this.objectNameList)) // 数组去重
       // 去掉@后面手动输入的字符串，以确保@后面紧跟着点击的下拉选项
-      this.temp.inputContent = this.temp.inputContent.match(/(\S*)@/)[0]
+      this.temp.inputContent = this.temp.inputContent.slice(0, this.temp.inputContent.lastIndexOf('@') + 1)
       this.temp.inputContent = this.temp.inputContent + row.name // 将@对象的名字展示在输入框内
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
@@ -182,10 +182,17 @@ export default {
         this.placeholder_flag = false
       }
     },
+    replaceRemark(val, value) {
+      const replaceReg = new RegExp(val, 'ig')
+      const replaceString = '<span style="color: #2289f0;">' + val + '</span>'
+      return value.replace(replaceReg, replaceString)
+    },
     // 提交
     send() {
       this.objectNameList.forEach(item => {
-        console.log(item)
+        if (this.temp.inputContent.includes(item)) {
+          this.temp.inputContent = this.replaceRemark('@' + item, this.temp.inputContent)
+        }
       })
       // 提交成功，给备注数据数组新增最新备注
       // const curTime = parseTime(Date.parse(new Date())) // 获取当前时间
