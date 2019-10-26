@@ -12,7 +12,7 @@
           <el-input v-model="temp.buyer_id" autocomplete="off" class="inputWidth"></el-input>
         </el-form-item>
         <el-form-item label="订单备注" label-width="100px">
-          <el-input v-model="temp.remark" placeholder="请输入订单备注" style="widht: 250px"></el-input>
+          <el-input v-model="temp.remark" placeholder="请输入订单备注" style="width: 250px"></el-input>
           <!-- 新增时的单子备注组件 -->
           <!-- <remark-creat v-if="remarkStatus" :content.sync="remarkContent" :objectname.sync="objectNameList" /> -->
           <!-- 编辑时的单子备注组件 -->

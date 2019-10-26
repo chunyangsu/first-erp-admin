@@ -18,7 +18,7 @@
               <div class="date">{{ item.time }}</div>
             </div>
             <!-- 备注内容 -->
-            <div class="content">{{ item.content }}</div>
+            <pre style="margin: 0;"><div class="content" v-html="item.content"/></pre>
           </div>
         </div>
       </div>
@@ -31,8 +31,8 @@
       <div style="float: left; width: 84%;">
         <el-form ref="dataForm" :rules="rules" :model="temp">
           <el-form-item prop="inputContent">
-            <el-input v-if="placeholder_flag" ref="remarkInput" v-model="temp.inputContent" :rows="2" :placeholder="replyHolder" type="textarea" autofocus @keyup.shift.50.native="showUserList" />
-            <el-input v-else ref="remarkInput" v-model="temp.inputContent" :rows="2" placeholder="请输入内容" type="textarea" autofocus @keyup.shift.50.native="showUserList" />
+            <el-input v-if="placeholder_flag" ref="remarkInput" v-model="temp.inputContent" :rows="2" :placeholder="replyHolder" type="textarea" autofocus @input="searchUser" />
+            <el-input v-else ref="remarkInput" v-model="temp.inputContent" :rows="2" placeholder="请输入内容" type="textarea" autofocus @input="searchUser" />
           </el-form-item>
         </el-form>
       </div>
@@ -86,27 +86,18 @@ export default {
       userInfo: {}, // 当前用户
       replyObjectId: undefined, // 回复对象的id
       // cancelRepay: false,
-      userList: [{
-        id: 1,
-        name: '苏春阳'
-      }, {
-        id: 2,
-        name: '杨晗'
-      }, {
-        id: 3,
-        name: '王月磊'
-      }, {
-        id: 4,
-        name: '顾剑晨'
-      }
-      ],
+      userList: [], // 用户列表
+      allUserList: [], // 完整的用户列表，用于删除搜索关键字后再次赋值给用户列表
       reminds: [], // @对象的id
       objectNameList: [], // @对象名称的数组
       optionVisible: false,
       placeholder_flag: false,
       replyHolder: '',
       rules: {
-        // inputContent: [{ required: true, message: '评论内容不能为空', trigger: ['blur', 'change'] }]
+        // inputContent: [{ required: true,
+        //   pattern: /^[\s\S]*.*[^\s][\s\S]*$/, // 非空校验：不可全为空格和换行，允许字符前面和后面为空
+        //   message: this.$t('不可为空'),
+        //   trigger: 'change' }]
       }
     }
   },
@@ -121,10 +112,14 @@ export default {
         container.scrollTop = container.scrollHeight
       })
     },
-    // 输入@展示用户下拉框
-    showUserList() {
-      this.optionVisible = true
-      this.placeholder_flag = true
+    // 获取用户列表数据
+    async getUserList() {
+      const response = await this.$http.get('/users/getUsersList')
+      const { data, meta } = response.data
+      if (meta.status === 200) {
+        this.userList = data.users
+        this.allUserList = data.users // 将完整的用户列表存在另一个数组中
+      }
     },
     // 点击空白处关闭用户下拉框
     colseOption() {
@@ -134,6 +129,8 @@ export default {
     selected(row, column, cell, event) {
       this.objectNameList.push(row.name) // 获取@对象的name，组成数组
       this.objectNameList = Array.from(new Set(this.objectNameList)) // 数组去重
+      // 去掉@后面手动输入的字符串，以确保@后面紧跟着点击的下拉选项
+      this.temp.inputContent = this.temp.inputContent.match(/(\S*)@/)[0]
       this.temp.inputContent = this.temp.inputContent + row.name // 将@对象的名字展示在输入框内
       this.$nextTick(() => {
         this.$refs['remarkInput'].focus()
@@ -157,17 +154,56 @@ export default {
         this.$refs['remarkInput'].focus()
       })
     },
+    // 弹出下拉列表后输入关键字进行搜索
+    searchUser(val) {
+      // 判断最后一个字符是否是@，是的话弹出下拉列表
+      if (val.charAt(val.length - 1) === '@') {
+        this.optionVisible = true
+        this.placeholder_flag = false
+        // 已经获取了用户列表数据，就不再调用接口了
+        if (this.allUserList.length > 0) {
+          this.userList = this.allUserList
+        } else {
+          this.getUserList()
+        }
+      }
+      if (val.includes('@')) {
+        // 获取@最后一次出现的位置(下标)并截取最后一个@及后面的字符串，+1 是从@后面一个字符开始算起(不包括@)
+        const str = val.slice(val.lastIndexOf('@') + 1)
+        if (str !== '') {
+          this.userList = this.userList.filter(item => item.name.includes(str))
+        } else {
+          // 获取所有的用户列表
+          this.userList = this.allUserList
+        }
+      } else {
+        // input框内没有@时，关闭下拉框
+        this.optionVisible = false
+        this.placeholder_flag = false
+      }
+    },
     // 提交
     send() {
-      this.scrollToBottom() // 滚动条至最底部
       this.objectNameList.forEach(item => {
-        if (this.temp.inputContent.includes(item)) {
-          console.log(item)
-        }
+        console.log(item)
       })
-      // 提交后隐藏备注弹窗
-      // this.visible = false
-      // this.$emit('update:visible')
+      // 提交成功，给备注数据数组新增最新备注
+      // const curTime = parseTime(Date.parse(new Date())) // 获取当前时间
+      // 将新添加的备注push进数组里
+      this.remarks.push({
+        // comment_user_icon: this.userIcon,
+        // comment_user_name: this.userInfo.name,
+        // comment_object_id: this.replyObjectId, // 回复对象的id
+        // comment_object_name: this.replyObjectName, // 回复对象的名字
+        // time: curTime,
+        content: this.temp.inputContent
+      })
+      this.temp.inputContent = ''
+      this.placeholder_flag = false
+      this.$nextTick(() => {
+        this.scrollToBottom()
+        // this.$refs['dataForm'].clearValidate()
+      })
     }
   }
 }
@@ -241,7 +277,8 @@ export default {
     left: 0;
     top: 64px;
     width: 150px;
-    height: 300px;
+    min-height: 60px;
+    max-height: 200px;
     overflow-y: auto;
     background-color: white;
     border: 1px solid #e4e7ed;
