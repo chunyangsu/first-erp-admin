@@ -28,11 +28,11 @@
         <!-- 订单备注 -->
         <el-table-column label="产品备注" min-width="150">
           <template slot-scope="scope">
-            <!-- <el-popover trigger="click" placement="right" @show="showRemarks(scope.row)">
-              <remark v-loading="LD_remark" :show-input="true" :remarks="remarkList" />
+            <el-popover trigger="click" placement="right" @show="showRemarks(scope.row)">
+              <!-- <remark v-loading="LD_remark" :show-input="true" :remarks="remarkList" /> -->
+              <sgo-remark ref="sgoRemark" />
               <div slot="reference" style="cursor: pointer;">{{ scope.row.remark }}</div>
-            </el-popover> -->
-            <remark :show-input="true" :remark="scope.row.remark" :data="remarkList" @remote-method="getRemarkList" />
+            </el-popover>
           </template>
         </el-table-column>
       </el-table>
@@ -68,26 +68,11 @@ export default {
         this.list = data.orders
       }
     },
-    // 获取备注(评论)组件数据
-    async getRemarks() {
-      const response = await this.$http.get('/comment/getCommentsList')
-      const { data, meta } = response.data
-      if (meta.status === 200) {
-        this.remarkList = data.comments
-        setTimeout(() => {
-          this.LD_remark = false
-        }, 150)
-      }
-    },
-    getRemarkList() {
-      this.LD_remark = true
-      this.getRemarks()
-    }
     // 点击弹窗备注弹窗时，调用数据
-    // showRemarks(row) {
-    //   this.LD_remark = true
-    //   this.getRemarkList()
-    // }
+    showRemarks(row) {
+      // this.LD_remark = true
+      this.$refs.sgoRemark.getRemarks()
+    }
   }
 }
 </script>

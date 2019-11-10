@@ -14,6 +14,7 @@ import SgoSelect from './components/SgoSelect'
 import myLoading from './components/loading'
 // 备注组件
 import Remark from './components/Remark'
+import SgoRemark from './components/SgoRemark'
 // 导入css样式
 import '@/assets/index.css'
 import '@/styles/index.less' // global css
@@ -29,6 +30,7 @@ Vue.use(myLoading, {
   progressColor: 'blue'
 })
 Vue.use(Remark)
+Vue.use(SgoRemark)
 Vue.use(SgoSelect)
 // 将 axios 添加到Vue的原型中
 // 实例对象可以直接使用原型对象中的属性或方法
