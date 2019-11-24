@@ -76,12 +76,12 @@ export default {
       }
       this.cartProductList = this.cartProductList.concat(this.chooseProductList)
       // 数组去重
-      const hash = {}
-      const newArr = this.cartProductList.reduceRight((item, next) => {
-        hash[next.id] ? '' : (hash[next.id] = true && item.unshift(next))
-        return item
-      }, [])
-      this.cartProductList = newArr
+      // const hash = {}
+      // const newArr = this.cartProductList.reduceRight((item, next) => {
+      //   hash[next.id] ? '' : (hash[next.id] = true && item.unshift(next))
+      //   return item
+      // }, [])
+      // this.cartProductList = newArr
       // 创建本地存储的数据
       localStorage.setItem('cartProList', JSON.stringify(this.cartProductList))
     }
