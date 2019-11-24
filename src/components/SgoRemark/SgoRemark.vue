@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div id="remarksScroll" style="max-height: 350px; overflow-y: auto;">
+    <div v-loading="LD_remark" id="remarksScroll" style="max-height: 400px; overflow-y: auto;">
       <div v-for="item in remarkList" :key="item.id" class="remark">
         <!-- 单条备注 -->
         <div class="info">
@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      LD_loading: false,
+      LD_remark: true,
       remarkList: [], // 备注数组
       temp: {
         inputContent: '' // 输入框内容
@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    this.scrollToBottom()
+    this.getRemarks()
   },
   methods: {
     // 滚动条至最底部
@@ -108,18 +108,17 @@ export default {
     },
     // 获取备注数据
     async getRemarks() {
+      this.LD_remark = true
       this.remarkList = []
       const response = await this.$http.get('/comment/getCommentsList')
       const { data, meta } = response.data
       if (meta.status === 200) {
-        // this.remarkList = data.comments
-        data.comments.forEach(item => {
-          this.remarkList.push(item)
-        })
+        this.remarkList = data.comments
         console.log(this.remarkList)
-        // setTimeout(() => {
-        //   this.LD_remark = false
-        // }, 150)
+        setTimeout(() => {
+          this.LD_remark = false
+          this.scrollToBottom()
+        }, 500)
       }
     },
     // 获取用户列表数据
@@ -218,7 +217,7 @@ export default {
       this.temp.inputContent = ''
       this.placeholder_flag = false
       this.$nextTick(() => {
-        this.scrollToBottom()
+        // this.scrollToBottom()
         // this.$refs['dataForm'].clearValidate()
       })
     }
@@ -229,6 +228,7 @@ export default {
 <style scoped lang="less">
 .container {
   box-sizing: border-box;
+  // border-top: 1px solid #eae8e8;
   // 备注
   .remark {
     display: flex;

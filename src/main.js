@@ -7,7 +7,8 @@ import router from './router'
 import ElementUI from 'element-ui'
 // 导入样式
 import 'element-ui/lib/theme-chalk/index.css'
-
+// 导入自定义dialog拖拽指令
+// import './common/dialogDrag.js'
 // 多选搜索组件
 import SgoSelect from './components/SgoSelect'
 // loading组件

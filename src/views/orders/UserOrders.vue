@@ -28,11 +28,15 @@
         <!-- 订单备注 -->
         <el-table-column label="产品备注" min-width="150">
           <template slot-scope="scope">
-            <el-popover trigger="click" placement="right" @show="showRemarks(scope.row)">
-              <!-- <remark v-loading="LD_remark" :show-input="true" :remarks="remarkList" /> -->
+            <el-drawer :visible.sync="scope.row.drawer" :direction="direction" :modal="false" size="40%" @close="choseDrawer">
+              <el-radio-group v-model="direction" style="padding-bottom: 20px;">
+                <el-radio label="ltr">从左侧弹出</el-radio>
+                <el-radio label="rtl">从右侧弹出</el-radio>
+              </el-radio-group>
               <sgo-remark ref="sgoRemark" />
-              <div slot="reference" style="cursor: pointer;">{{ scope.row.remark }}</div>
-            </el-popover>
+            </el-drawer>
+            <!-- 表格最后一条备注 -->
+            <span @click="showRemarks(scope.row)" style="cursor: pointer;">{{ scope.row.remark }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -52,8 +56,10 @@ export default {
   data() {
     return {
       list: [],
-      LD_remark: false,
-      remarkList: []
+      // drawer: false,
+      direction: 'rtl'
+      // LD_remark: false,
+      // remarkList: []
     }
   },
   created() {
@@ -70,8 +76,20 @@ export default {
     },
     // 点击弹窗备注弹窗时，调用数据
     showRemarks(row) {
-      // this.LD_remark = true
-      this.$refs.sgoRemark.getRemarks()
+      this.list.forEach(item => {
+        if (item.id === row.id) {
+          item.drawer = true
+        } else {
+          item.drawer = false
+        }
+      })
+      this.list.push('1')
+      this.list.pop()
+    },
+    // 关闭抽屉弹窗
+    choseDrawer() {
+      this.list.push('1')
+      this.list.pop()
     }
   }
 }
