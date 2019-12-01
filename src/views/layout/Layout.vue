@@ -107,6 +107,19 @@
               </template>
             </el-menu-item>
           </el-submenu>
+          <!-- 一级菜单 销售管理 -->
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>销售管理</span>
+            </template>
+            <el-menu-item index="/layout/sellOrder">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>销售订单</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
         <!-- 个人中心 -->
         <div class="perCenter">

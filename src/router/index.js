@@ -20,6 +20,8 @@ import StorageManage from '@/views/storage/StorageManage'
 import SpecManage from '@/views/specifications/SpecManage'
 // 导入用户订单页面
 import UserOrders from '@/views/orders/UserOrders'
+// 导入销售订单页面
+import sellOrder from '@/views/sellOrder/sellOrder'
 
 Vue.use(Router)
 
@@ -56,7 +58,12 @@ const router = new Router({
     }, {
       path: 'orders',
       component: UserOrders
-    }]
+    },
+    {
+      path: 'sellOrder',
+      component: sellOrder
+    }
+    ]
   }
   ]
 })
