@@ -94,16 +94,22 @@
               </template>
             </el-menu-item>
           </el-submenu>
-          <!-- 一级菜单 订单管理 -->
+          <!-- 一级菜单 备注(评论))组件 -->
           <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>订单管理</span>
+              <span>备注组件</span>
             </template>
-            <el-menu-item index="/layout/orders">
+            <el-menu-item index="/layout/remarkDrawer">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>用户订单</span>
+                <span>抽屉式弹窗</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="/layout/remarkPopover">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>Popover弹出框</span>
               </template>
             </el-menu-item>
           </el-submenu>

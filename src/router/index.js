@@ -18,8 +18,10 @@ import ProductManage from '@/views/products/ProductManage'
 import StorageManage from '@/views/storage/StorageManage'
 // 导入规格参数页面
 import SpecManage from '@/views/specifications/SpecManage'
-// 导入用户订单页面
-import UserOrders from '@/views/orders/UserOrders'
+// 导入抽屉式备注弹窗
+import RemarkDrawer from '@/views/remarkDrawer/RemarkDrawer'
+// 导入弹出框式备注弹窗
+import RemarkPopover from '@/views/remarkPopover/RemarkPopover'
 // 导入销售订单页面
 import sellOrder from '@/views/sellOrder/sellOrder'
 
@@ -56,8 +58,11 @@ const router = new Router({
       path: 'specifications',
       component: SpecManage
     }, {
-      path: 'orders',
-      component: UserOrders
+      path: 'remarkDrawer',
+      component: RemarkDrawer
+    }, {
+      path: 'remarkPopover',
+      component: RemarkPopover
     },
     {
       path: 'sellOrder',

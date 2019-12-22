@@ -2,6 +2,14 @@
   <el-table ref="table" :data="tableData" border stripe style="width: 100%">
     <el-table-column prop="date" label="日期" width="180">
     </el-table-column>
+    <el-table-column prop="name" label="姓名" width="180">
+      <template slot-scope="scope" style="position:relative">
+        <el-popover trigger="click" :open-delay=150 placement="right">
+          <remark :remarks="remarkList" />
+          <div class="link-type" slot="reference" v-html="scope.row.name" />
+        </el-popover>
+      </template>
+    </el-table-column>
     <el-table-column prop="address " label="地址 ">
     </el-table-column>
   </el-table>
@@ -9,6 +17,7 @@
 
 <script>
 export default {
+  name: 'RemarkPopover',
   data() {
     return {
       remarkList: [], // 备注数组
@@ -52,7 +61,19 @@ export default {
       if (meta.status === 200) {
         this.remarkList = data.comments
       }
+    },
+    // 鼠标滑入展示备注组件
+    showRemark(row) {
+      setTimeout(() => {
+        row[row.id + 'remarkVisible'] = true
+      }, 150)
     }
   }
 }
 </script>
+<style>
+.link-type {
+  color: blue;
+  cursor: pointer;
+}
+</style>

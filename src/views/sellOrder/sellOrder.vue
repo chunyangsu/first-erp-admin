@@ -10,7 +10,8 @@
         <!-- 销售订单号 -->
         <el-table-column label="销售订单号" min-width="150">
           <template slot-scope="scope">
-            <span class="link-type" @click="$refs.sellOrderDetail.handleDetail(scope.row.id, dialogList)">{{ scope.row.code }}</span>
+            <!-- <span class="link-type" @click="$refs.sellOrderDetail.handleDetail(scope.row.id, dialogList)">{{ scope.row.code }}</span> -->
+            <span class="link-type" @click="$refs.testOne.open(scope.row)">{{ scope.row.code }}</span>
           </template>
         </el-table-column>
         <!-- 销售员 -->
@@ -28,9 +29,9 @@
       </el-table>
     </div>
     <!-- 详情弹窗 -->
-    <sell-order-detail ref="sellOrderDetail" :max-width="80" :level-width="5" @show-pro-detail="showProDetail" />
+    <!-- <sell-order-detail ref="sellOrderDetail" :max-width="80" :level-width="5" @show-pro-detail="showProDetail" /> -->
     <!-- 产品弹窗 -->
-    <pro-detail ref="proDetail" :max-width="80" :level-width="5" @show-sellorder-detail="showSellOrderDetail" />
+    <!-- <pro-detail ref="proDetail" :max-width="80" :level-width="5" @show-sellorder-detail="showSellOrderDetail" /> -->
   </div>
 </template>
 
@@ -60,20 +61,20 @@ export default {
       if (meta.status === 200) {
         this.list = data.orders
       }
-    },
-    // 打开销售订单详情弹窗
-    showSellOrderDetail(id, dialogList) {
-      // console.log(dialogList)
-      // this.orderDialogList = []
-      // this.orderDialogList = dialogList
-      this.$refs.sellOrderDetail.handleDetail(id, dialogList)
-    },
-    // 展示产品详情弹窗
-    showProDetail(id, dialogList) {
-      // this.proDialogList = []
-      // this.proDialogList = dialogList
-      this.$refs.proDetail.handleDetail(id, dialogList)
     }
+    // 打开销售订单详情弹窗
+    // showSellOrderDetail(id, dialogList) {
+    //   // console.log(dialogList)
+    //   // this.orderDialogList = []
+    //   // this.orderDialogList = dialogList
+    //   this.$refs.sellOrderDetail.handleDetail(id, dialogList)
+    // },
+    // // 展示产品详情弹窗
+    // showProDetail(id, dialogList) {
+    //   // this.proDialogList = []
+    //   // this.proDialogList = dialogList
+    //   this.$refs.proDetail.handleDetail(id, dialogList)
+    // }
   }
 }
 </script>
