@@ -47,7 +47,7 @@
 
 <script>
 // 导入axios
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   // 数据
@@ -101,29 +101,35 @@ export default {
     //     })
     // },
 
-    async login() {
-      const res = await axios.post(
-        'http://localhost:8888/api/private/v1/login',
-        this.loginForm
-      )
-      console.log(res)
-      // 获取属性和登录状态
-      const { data, meta } = res.data
-      console.log(data)
-      if (meta.status === 200) {
-        console.log('登录成功')
-        // 登录成功，需要跳转到后台管理首页
-        // 同时需要记录token的值
-        localStorage.setItem('token', data.token)
-        this.$router.push('/layout')
-      } else {
-        // console.log('登录失败', meta.msg)
-        this.$message({
-          type: 'error',
-          message: meta.msg,
-          duration: 1200
-        })
-      }
+    // async login() {
+    //   const res = await axios.post(
+    //     'http://localhost:8888/api/private/v1/login',
+    //     this.loginForm
+    //   )
+    //   console.log(res)
+    //   // 获取属性和登录状态
+    //   const { data, meta } = res.data
+    //   console.log(data)
+    //   if (meta.status === 200) {
+    //     console.log('登录成功')
+    //     // 登录成功，需要跳转到后台管理首页
+    //     // 同时需要记录token的值
+    //     localStorage.setItem('token', data.token)
+    //     this.$router.push('/layout')
+    //   } else {
+    //     // console.log('登录失败', meta.msg)
+    //     this.$message({
+    //       type: 'error',
+    //       message: meta.msg,
+    //       duration: 1200
+    //     })
+    //   }
+    // },
+    // 模拟获取token实现登录(token写死)
+    login() {
+      console.log(1)
+      localStorage.setItem('token', '111')
+      this.$router.push('/layout')
     },
     // 提交表单的函数
     submitForm() {
